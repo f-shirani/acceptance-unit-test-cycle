@@ -9,6 +9,7 @@
       <th>Movie Title</th>
       <th>Rating</th>
       <th>Release Date</th>
+       <th>Director</th>
       <th>More Info</th>
     </tr>
   </thead>
@@ -25,6 +26,9 @@
           <%= movie.release_date %>
         </td>
         <td>
+          <%= movie.director %>
+        </td>
+        <td>
           <%= link_to "More about #{movie.title}", movie_path(movie) %>
         </td>
       </tr>
@@ -32,3 +36,4 @@
   </tbody>
 </table>
 <%= link_to 'Add new movie', new_movie_path, :class => 'btn btn-primary' %>
+

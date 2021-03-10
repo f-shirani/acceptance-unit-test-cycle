@@ -1,0 +1,9 @@
+<h2>Movies with director <em><%= @director_name %></em></h2>
+
+<ul id="mlist">
+    <% @movies.each do |movie| %>
+        <li>
+            <%= movie.title %>
+        </li>
+    <% end %>
+</ul>
