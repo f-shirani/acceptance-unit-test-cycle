@@ -30,7 +30,6 @@ class MoviesController < ApplicationController
     flash[:notice] = "#{@movie.title} was successfully updated."
     redirect_to movie_path(@movie)
   end
-  
  
  
   def destroy
@@ -40,13 +39,17 @@ class MoviesController < ApplicationController
     redirect_to movies_path
   end
   
+  
   def search
-    @similar_movies = Movie.similar_movies(params[:title])
-    if @similar_movies.nil?
-      redirect_to root_url, alert: "'#{params[:title]}' has no director info"
-    end
-    @movie = Movie.find_by(title: params[:title])
-  end
+      @movie = Movie.find(params[:id])
+      @movies, check_info = Movie.same_director(@movie)
+      if check_info
+        flash[:notice] = "'#{@movie.title}' has no director information"
+        redirect_to movies_path
+      end
+end
+  
+  
 
   private
   # Making "internal" methods private is not required, but is a common practice.

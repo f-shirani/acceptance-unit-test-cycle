@@ -2,6 +2,7 @@
 <h2>All Movies</h2>
 
 <%#  Part 2: Start here... %>
+<h3><%=flash[:info]%>
 
 <table class="table table-striped col-md-12" id="movies">
   <thead>
@@ -9,7 +10,6 @@
       <th>Movie Title</th>
       <th>Rating</th>
       <th>Release Date</th>
-       <th>Director</th>
       <th>More Info</th>
     </tr>
   </thead>
@@ -26,9 +26,6 @@
           <%= movie.release_date %>
         </td>
         <td>
-          <%= movie.director %>
-        </td>
-        <td>
           <%= link_to "More about #{movie.title}", movie_path(movie) %>
         </td>
       </tr>
@@ -36,4 +33,3 @@
   </tbody>
 </table>
 <%= link_to 'Add new movie', new_movie_path, :class => 'btn btn-primary' %>
-

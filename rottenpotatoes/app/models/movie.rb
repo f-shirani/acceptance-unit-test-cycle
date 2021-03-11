@@ -1,8 +1,20 @@
 class Movie < ActiveRecord::Base
-     def self.similar_movies
-        director = Movie.find_by(title: movie_title).director
-        return nil if director.blank? 
-        Movie.where(director: director).pluck(:title)
+    
+    # class method of finding all movies with same director
+    # 
+    def self.same_director(id)
+        movie = self.find(id)
+        if !movie.director.blank?
+            movies=self.where(:director => movie.director).where.not(:id => movie.id)
+            return movies, false
+        else
+            return [], true
+        end
     end
+    
+    def self.all_ratings
+    %w(G PG PG-13 NC-17 R)
+    end
+
+  
 end
- 
