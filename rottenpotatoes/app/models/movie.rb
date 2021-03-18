@@ -6,9 +6,9 @@ class Movie < ActiveRecord::Base
         movie = self.find(id)
         if !movie.director.blank?
             movies=self.where(:director => movie.director).where.not(:id => movie.id)
-            return movies, false
+            return movies
         else
-            return [], true
+            return nil
         end
     end
     

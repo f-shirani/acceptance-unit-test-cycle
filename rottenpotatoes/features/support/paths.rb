@@ -22,11 +22,11 @@ module NavigationHelpers
     #     user_profile_path(User.find_by_login($1))
     
     # edit page
-    when /^the edit page for "(.*)"$/ 
+    when /^the edit page for "(.+)"$/ 
       movie_title = Movie.find_by(title: $1)
       edit_movie_path(movie_title)
       
-    when /^the details page for "(.+)"$/ 
+    when /^the details page for "(.*)"$/ 
       movie = Movie.find_by(title: $1)
       movie_path(movie)
       

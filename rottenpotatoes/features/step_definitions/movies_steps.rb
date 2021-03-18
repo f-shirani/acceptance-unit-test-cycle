@@ -28,3 +28,9 @@ Then /the director of "(.*)" should be "(.*)"/ do |movie_title, director_name|
   visit movie_path(movie)
   expect(page.body).to match(/Director:\s*#{director_name}/)   
 end
+
+Then /(.*) seed movies should exist/ do | n_seeds |
+  Movie.count.should be n_seeds.to_i
+end
+
+

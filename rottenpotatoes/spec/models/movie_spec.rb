@@ -1,26 +1,42 @@
 require 'rails_helper'
 
-describe Movie do
-  describe '.find_similar_movies' do
-    let!(:movie1) { FactoryBot.create(:movie, title: 'Hitchcock', director: 'Tarantino') }
-    let!(:movie2) { FactoryBot.create(:movie, title: 'Anaconda', director: 'Luis Llosa') }
-    let!(:movie3) { FactoryBot.create(:movie, title: 'Celebrity', director: 'Tarantino') }
-    let!(:movie4) { FactoryBot.create(:movie, title: 'Stop') }
-
-    context 'director exists' do
-      it 'finds similar movies correctly' do
-        expect(Movie.same_director(movie1.title)).to eql(['Hitchcock', "Celebrity"])
-        expect(Movie.same_director(movie1.title)).to_not include(['Anaconda'])
-        expect(Movie.same_director(movie2.title)).to eql(['Anaconda'])
+if RUBY_VERSION>='2.6.0'
+  if Rails.version < '5'
+    class ActionController::TestResponse < ActionDispatch::TestResponse
+      def recycle!
+        # hack to avoid MonitorMixin double-initialize error:
+        @mon_mutex_owner_object_id = nil
+        @mon_mutex = nil
+        initialize
       end
     end
-
-    context 'director does not exist' do
-      it 'handles sad path' do
-        expect(Movie.same_director(movie4.title)).to eql(nil)
-      end
-    end
+  else
+    puts "Monkeypatch for ActionController::TestResponse no longer needed"
   end
 end
+
+describe Movie  do
+    describe '#same_director' do
+        context 'find all movies with the same director' do
+          let!(:movie1) { FactoryBot.create(:movie, title: 'Movie1', director: 'Director1') }
+          let!(:movie2) { FactoryBot.create(:movie, title: 'Movie2', director: 'Director2') }
+          let!(:movie3) { FactoryBot.create(:movie, title: 'Movie3', director: 'Director1') }
+          
+      
+          subject { Movie.same_director(movie1.id) }
+          it {expect(subject).to include(movie3) }
+          it {expect(subject).to_not include(movie2) }
+        end
+        
+        context 'director does not exist' do
+            let!(:movie4) { FactoryBot.create(:movie, title: 'Movie4') }
+            it 'handles sad path'  do
+              expect(Movie.same_director(movie4.id)).to eq(nil)
+            end
+        end
+   
+    end
+end
+
 
 
